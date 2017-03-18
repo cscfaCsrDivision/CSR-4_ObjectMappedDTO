@@ -1,0 +1,67 @@
+CSCFA Specification Reference Division 
+[
+    "cscfa-csr@division.cscfa.fr",
+    "cscfa-contact@cscfa.fr"
+]
+
+Specification - Object mapped DTO
+
+Abstract
+
+    This document specify how the DTO can be mapped to objects
+    
+Table of Contents
+    1. Implementation
+    2. Extends
+
+1. Implementation
+    This CSR implement the CSR-1
+
+2. Extends
+    This CSR extend the CSR-3
+    
+3. Metadata
+
+    To perform DTO to object mapping or reverse the DTO MUST define some metadata that inform any processor about how
+the DTO or the object will be hydrated.
+
+    3.1. Format
+    
+        The metadata SHOULD be specified in several formats, such as YAML, Annotations, XML or any other needed. To
+    perform this the metadata MUST be a set of object properties metadata contained into an object metadata
+    definition.
+
+        3.1.1. Loaders
+        
+            The metadata parser MUST implements an interface that MAY be called 'MetadataFormatParser'.
+            
+            The metadata parser interface MUST define a loading method that MAY be called 'Parse($input)' that will
+        parse the given input and return an object metadata.
+    
+        A parser MUST be used to transform the metadata from the initial format to the object metadata.
+        
+    3.2. Object metadata
+    
+        The object metadata MAY be called 'ObjectMetadata'.
+        
+        This object MUST implements an interface that MAY be called 'ObjectMetadataInterface'.
+        
+        The object metadata interface MUST extends IteratorInterface.
+        
+        The object metadata interface MUST define a set of method that give access to the contained metadata. By this 
+    way :
+        - MUST implement a method that allow to retreive all the object property metadata as array.
+        - MUST implement a method that allow to retreive a specific object property metadata by it's target property
+        name
+    
+    3.3. Object property metadata
+    
+        The object property metadata MAY be called 'ObjectPropertyMetadata'.
+        
+        This object MUST implements an interface that MAY be called 'ObjectPropertyMetadataInterface'.
+        
+        This object MUST implements a method that allow to retreive it's target property name.
+        
+        This object MUST implements any methods needed by the section 4.
+
+4. Property definitions
