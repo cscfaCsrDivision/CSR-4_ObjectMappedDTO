@@ -95,6 +95,9 @@ the DTO or the object will be hydrated.
 		
 	- the object DTO mapper :
 			The object DTO mapper specify which mapper must be used to map the DTO.
+		
+	- the object factory :
+			The object factory specify which factory must be used to create an object.
 
 5. Property definitions
 
