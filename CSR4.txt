@@ -30,6 +30,8 @@ the DTO or the object will be hydrated.
         The metadata SHOULD be specified in several formats, such as YAML, Annotations, XML or any other needed. To
     perform this the metadata MUST be a set of object properties metadata contained into an object metadata
     definition.
+    
+    	The object metadata MUST specify which object class is mapped to the DTO.
 
         3.1.1. Loaders
         
@@ -50,6 +52,7 @@ the DTO or the object will be hydrated.
         
         The object metadata interface MUST define a set of method that give access to the contained metadata. By this 
     way :
+        - MUST implement a method that allow to retreive the object class that is mapped to the DTO.
         - MUST implement a method that allow to retreive all the object property metadata as array.
         - MUST implement a method that allow to retreive a specific object property metadata by it's target property
         name
@@ -63,5 +66,84 @@ the DTO or the object will be hydrated.
         This object MUST implements a method that allow to retreive it's target property name.
         
         This object MUST implements any methods needed by the section 4.
+        
+    3.4. Caching system
+    
+    	For production improvement, the parser MAY be able to cache the parsed metadata. To perform this caching
+	process the parser SHOULD store a cache manager and SHOULD specify a ethod to set a debug argument.
 
-4. Property definitions
+4. Object definition
+
+	The object définition specify the class metadata. This informations are stored into the object metadata.
+
+	This definition SHOULD specify :	
+	- the mapped class :
+			The mapped class definition specify the mapped class of the DTO. This mapped class SHOULD be a full
+		calified class name or MAY be an array.
+		
+	- the object DTO mapper :
+			The object DTO mapper specify which mapper must be used to map the DTO.
+
+5. Property definitions
+
+	The property definition specify the mapped properties of the DTO. Each of this property informations are stored
+into the theyr own property metadata.
+
+	This definition SHOULD specify :
+	- the mapped property :
+			The mapped property specify a set of options applicable to the property. These options are any of the
+		following :
+			- the mapped property name :
+					The mapped property name MAY be specified. If this option is not specified, the mapper MUST work
+				on the assomption that the mapped property name is the same as the DTO property name.
+				
+			- the mapping group process :
+					The mapper MAY be abble to only map a set of properties by group. In this case, the properties MAY
+				specify a group or a set of group on which they MUST be mapped.
+				
+	- the mapped transformer :
+			A transformer MAY be applied before the mapping of the property value. In this case, the property MUST
+		specify the transformer to be applied.
+
+6. Mapper manager
+
+	The mapping process MUST be handled by a mapper manager that store a set of mapper and a set of data transfomers.
+On mapping a DTO, the mapper manager MUST store the DTO metadata supply by the metadata parsers. It MAY store a set of
+object factory to automatically create a mapped object.
+
+	When map, the mapper manager MUST use the defined mapper if specified by the metadata. If it not store this mapper
+the manager MUST throw an exception. If no one is pecéfied, the manager MUST ask each contained mapper for support
+and SHOULD use the first that support the DTO. If configurated for check the support confidence, it MUST choose
+the mapper with the stronger confidence level.
+
+	When map without target object spécified, the mapper manager MUST ask each contained object factories for object
+creation support and SHOULD use the first that support the DTO. If configurated for check the support confidence, it
+MUST choose the factory with the stronger confidence level.
+
+	For both mapper and factory, the manager MUST give the DTO metadata, the DTO object and for the mapper, the target
+object.
+
+7. Mapper
+
+	The mapper MUST be able to reply to a support question. By this way the mapper MUST define a method that SHOULD be
+name 'support'. This method MUST return 'false' if the given parameters are not supported and MAY return any of 'true'
+or a confidence value if it's supported. A 'null' reply MUST generate a logic error. If 'true' is returned, it MUST be
+considered as a low confidence.
+
+	The mapper MUST map a DTO to an object and be able to precess the reverse operation. By this way, the mapper MUST
+process an iteration of each of the properties that are specified by the DTO and MAY exclude any of these that are not
+include into a group, if a group or a set of one is spécified. If a data transforme is spécified for a mapped property
+the transformation MUST be applied before mapping.
+
+8. Data transformer
+
+	A data transformer MUST be able to process a data transformation in both normal and reverse way.
+
+9. Object factory
+
+	The object factory is in charge of create a a mapped object to be used by the mapper.
+
+	The object factory MUST be able to reply to a support question. By this way the factory MUST define a method that
+SHOULD be named 'support'. This method MUST return 'false' if the given parameters are not supported and MAY return any
+of 'true' or a confidence value if it's supported. A 'null' reply MUST generate a logic error. If 'true' is returned, it MUST be
+considered as a low confidence.
