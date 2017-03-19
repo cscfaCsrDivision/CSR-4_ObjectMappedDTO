@@ -13,6 +13,18 @@ Abstract
 Table of Contents
     1. Implementation
     2. Extends
+    3. Metadata
+    	3.1. Format
+    		3.1.1. Loaders
+		3.2. Object metadata
+		3.3. Object property metadata
+		3.4. Caching system
+	4. Object definition
+	5. Property definitions
+	6. Mapper manager
+	7. Mapper
+	8. Data transformer
+	9. Object factory
 
 1. Implementation
     This CSR implement the CSR-1
