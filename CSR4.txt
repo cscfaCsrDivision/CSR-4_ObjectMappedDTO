@@ -66,6 +66,7 @@ the DTO or the object will be hydrated.
     way :
         - MUST implement a method that allow to retreive the object class that is mapped to the DTO.
         - MUST implement a method that allow to retreive all the object property metadata as array.
+        - MUST implement a method that allow to retreive all the object factory.
         - MUST implement a method that allow to retreive a specific object property metadata by it's target property
         name
     
